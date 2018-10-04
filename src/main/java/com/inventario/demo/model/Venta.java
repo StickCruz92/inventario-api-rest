@@ -3,16 +3,52 @@ package com.inventario.demo.model;
 import java.io.Serializable;
 import java.util.Date;
 
+import javax.persistence.Column;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 public class Venta implements Serializable{
 
+	@Id
+	@Column(name="id_venta")
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long idVenta;
-	private Producto producto;
-	private String NombreUsuario;
-	private Date fecha;
-	private int cantidad;
-	private double precio;
-	private int estado;
 	
+	@Column(name="nombre_columna")
+	private String NombreUsuario;
+	
+	@Column(name = "fecha")
+	private Date fecha;
+	
+	@Column(name = "cantidad")
+	private int cantidad;
+	
+	@Column(name ="precio")
+	private double precio;
+	
+	@Column(name ="estado")
+	private int estado;	
+	
+	/*
+	@ManyToOne(optional=true, fetch=FetchType.EAGER)
+	@JoinColumn(name="id_producto")
+	@JsonIgnore
+	private Producto producto;
+	
+	public Producto getProducto() {
+		return producto;
+	}
+
+	public void setProducto(Producto producto) {
+		this.producto = producto;
+	}
+	*/
 	
 	public Venta() {
 		super();
@@ -37,14 +73,7 @@ public class Venta implements Serializable{
 		this.idVenta = idVenta;
 	}
 
-	public Producto getProducto() {
-		return producto;
-	}
-
-	public void setProducto(Producto producto) {
-		this.producto = producto;
-	}
-
+    
 	public String getNombreUsuario() {
 		return NombreUsuario;
 	}

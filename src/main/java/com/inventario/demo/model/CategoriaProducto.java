@@ -23,9 +23,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 public class CategoriaProducto implements Serializable {
 	
 	@Id
-	@Column(name="id_categoria_prodcuto")
+	@Column(name="id_categoria_producto")
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private Long idCategoriaProdcuto;
+	private Long idCategoriaProducto;
 	
 	@Column(name="nombre")
 	private String nombre;
@@ -33,6 +33,7 @@ public class CategoriaProducto implements Serializable {
 	@Column(name="estado")
 	private int estado;
 	
+	/*
 	@OneToMany(mappedBy="categoriaProducto", cascade =CascadeType.ALL, fetch=FetchType.EAGER)
 	@JsonIgnore
 	private List<Producto> productos = new ArrayList<>();
@@ -40,26 +41,24 @@ public class CategoriaProducto implements Serializable {
 	public List<Producto> getProductos() {
 		return productos;
 	}
-	
 	public void setProductos(List<Producto> productos) {
 		this.productos = productos;
 	}
-	
+	*/
 	public CategoriaProducto() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	public CategoriaProducto(Long idCategoriaProdcuto, String nombre, int estado) {
+	public CategoriaProducto(String nombre, int estado) {
 		super();
-		this.idCategoriaProdcuto = idCategoriaProdcuto;
 		this.nombre = nombre;
 		this.estado = estado;
 	}
-	public Long getIdCategoriaProdcuto() {
-		return idCategoriaProdcuto;
+	public Long getIdCategoriaProducto() {
+		return idCategoriaProducto;
 	}
-	public void setIdCategoriaProdcuto(Long idCategoriaProdcuto) {
-		this.idCategoriaProdcuto = idCategoriaProdcuto;
+	public void setIdCategoriaProducto(Long idCategoriaProducto) {
+		this.idCategoriaProducto = idCategoriaProducto;
 	}
 	public String getNombre() {
 		return nombre;
