@@ -8,6 +8,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -37,17 +38,34 @@ public class CategoriaProductoController {
 		return new ResponseEntity<List<CategoriaProducto>>(categoriaProductos, HttpStatus.OK);
 	}
 	
+	//GET
+	@RequestMapping(value="/categoriasProducto/{id}", method = RequestMethod.GET, headers = "Accept=Application/json")
+	public ResponseEntity<CategoriaProducto> getCategoriasProductosById(@PathVariable("id") Long idCategoriaProducto) {
+		
+		if (idCategoriaProducto == null || idCategoriaProducto.equals(null) || idCategoriaProducto <= 0) {
+			return new ResponseEntity<>(HttpStatus.CONFLICT);
+		}
+		
+		CategoriaProducto categoriaProductos = _categoriaProductoService.findById(idCategoriaProducto); 
+		if (categoriaProductos.equals(null) || categoriaProductos == null) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+		
+		return new ResponseEntity<CategoriaProducto>(categoriaProductos, HttpStatus.OK);
+	}
+	
 	//POST
-	@RequestMapping(value="/categoriasProducto", method = RequestMethod.POST, headers = "Accept = Application/json")
+	@RequestMapping(value="/categoriasProducto", method = RequestMethod.POST, headers = "Accept=Application/json")
 	public ResponseEntity<?> createCategoriaProducto (@RequestBody CategoriaProducto categoriaProducto, 
 			UriComponentsBuilder componentsBuilder) {
-		
-		if (categoriaProducto.getNombre().equals(null)) {
+	
+
+		if (categoriaProducto.getNombre().equals(null) || categoriaProducto.getNombre() == "" || categoriaProducto.getNombre().isEmpty()) {
 			return new ResponseEntity(HttpStatus.CONFLICT);
 		}
 		
 		if (_categoriaProductoService.findByName(categoriaProducto.getNombre()) != null) {
-			return new ResponseEntity(HttpStatus.CONFLICT);
+			return new ResponseEntity(HttpStatus.NO_CONTENT);
 		}
 		
 		_categoriaProductoService.saveCategoriaProducto(categoriaProducto);
@@ -57,6 +75,41 @@ public class CategoriaProductoController {
 				.buildAndExpand(categoriaProducto2.getIdCategoriaProducto()).toUri());
 		
 		return new ResponseEntity<String>(headers, HttpStatus.CREATED);
+	}
+	
+	@RequestMapping(value="/categoriasProducto/{id}", method = RequestMethod.PATCH, headers = "Accept=Application/json")
+	public ResponseEntity<CategoriaProducto> updateCategoriaProducto (@PathVariable("id") Long idCategoriaProducto, @RequestBody CategoriaProducto categoriaProducto) {
+		
+		if (idCategoriaProducto == null || idCategoriaProducto <= 0) {
+			return new ResponseEntity<>(HttpStatus.CONFLICT);
+		}
+		
+		CategoriaProducto currentCategProducto = _categoriaProductoService.findById(idCategoriaProducto);
+		if (currentCategProducto == null || currentCategProducto.equals(null)) {
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		}
+	    
+		currentCategProducto.setNombre(categoriaProducto.getNombre());
+		currentCategProducto.setEstado(categoriaProducto.getEstado());
+
+		_categoriaProductoService.updateCategoriaProducto(currentCategProducto);
+		return new ResponseEntity<CategoriaProducto>(currentCategProducto, HttpStatus.OK);
+	}
+	
+	@RequestMapping(value="/categoriasProducto/{id}", method = RequestMethod.DELETE, headers = "Accept=Application/json")
+	public ResponseEntity<CategoriaProducto> deleteCategoriaProducto (@PathVariable("id") Long idCategoriaProducto) {
+		
+		if (idCategoriaProducto == null || idCategoriaProducto <= 0) {
+			return new ResponseEntity<>(HttpStatus.CONFLICT);
+		}
+		
+		CategoriaProducto categoriaProducto = _categoriaProductoService.findById(idCategoriaProducto);
+		if (categoriaProducto == null || categoriaProducto.equals(null)) {
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		}
+
+		_categoriaProductoService.deleteCategoriaProductoById(idCategoriaProducto);
+		return new ResponseEntity<CategoriaProducto>(HttpStatus.OK);
 	}
 
 }

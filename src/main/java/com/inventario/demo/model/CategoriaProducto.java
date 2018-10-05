@@ -32,7 +32,7 @@ public class CategoriaProducto implements Serializable {
 	
 	@Column(name="estado")
 	private int estado;
-	
+    
 	/*
 	@OneToMany(mappedBy="categoriaProducto", cascade =CascadeType.ALL, fetch=FetchType.EAGER)
 	@JsonIgnore
@@ -41,6 +41,7 @@ public class CategoriaProducto implements Serializable {
 	public List<Producto> getProductos() {
 		return productos;
 	}
+	
 	public void setProductos(List<Producto> productos) {
 		this.productos = productos;
 	}

@@ -36,7 +36,7 @@ public class CatalogoProductoDaoImpl extends AbstractSession implements Categori
 	@Override
 	public List<CategoriaProducto> findAllCategoriaProductos() {
 		// TODO Auto-generated method stub
-		return getSession().createQuery("from CategoriaProducto").list();
+		return getSession().createQuery("from CategoriaProducto where estado = 1").list();
 	}
 
 	@Override
@@ -46,9 +46,10 @@ public class CatalogoProductoDaoImpl extends AbstractSession implements Categori
 	}
 
 	@Override
-	public CategoriaProducto findByName(String name) {
+	public CategoriaProducto findByName(String nombre) {
 		// TODO Auto-generated method stub
-		return (CategoriaProducto) getSession().createQuery("from CategoriaProducto where nombre = :name").setParameter("nombre", name).uniqueResult();
+		return (CategoriaProducto) getSession().createQuery("from CategoriaProducto where nombre = :nombre")
+				.setParameter("nombre", nombre).uniqueResult();
 	}
 
 }
