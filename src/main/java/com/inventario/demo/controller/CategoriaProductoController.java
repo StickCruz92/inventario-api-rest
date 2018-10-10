@@ -1,6 +1,7 @@
 package com.inventario.demo.controller;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,9 +13,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import com.inventario.demo.model.CategoriaProducto;
+import com.inventario.demo.model.Producto;
 import com.inventario.demo.service.CategoriaProductoService;
 
 @Controller
@@ -23,7 +26,7 @@ public class CategoriaProductoController {
 	
 	@Autowired
 	CategoriaProductoService _categoriaProductoService;
-	
+		
 	//GET
 	@RequestMapping(value="/categoriasProducto", method = RequestMethod.GET, headers = "Accept=Application/json")
 	public ResponseEntity<List<CategoriaProducto>> getCategoriasProductos() {
@@ -38,7 +41,7 @@ public class CategoriaProductoController {
 		return new ResponseEntity<List<CategoriaProducto>>(categoriaProductos, HttpStatus.OK);
 	}
 	
-	//GET
+	//GET BY ID
 	@RequestMapping(value="/categoriasProducto/{id}", method = RequestMethod.GET, headers = "Accept=Application/json")
 	public ResponseEntity<CategoriaProducto> getCategoriasProductosById(@PathVariable("id") Long idCategoriaProducto) {
 		
@@ -46,12 +49,23 @@ public class CategoriaProductoController {
 			return new ResponseEntity<>(HttpStatus.CONFLICT);
 		}
 		
-		CategoriaProducto categoriaProductos = _categoriaProductoService.findById(idCategoriaProducto); 
-		if (categoriaProductos.equals(null) || categoriaProductos == null) {
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		CategoriaProducto categoriaProducto = _categoriaProductoService.findById(idCategoriaProducto); 
+		if (categoriaProducto.equals(null) || categoriaProducto == null) {
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		}
 		
-		return new ResponseEntity<CategoriaProducto>(categoriaProductos, HttpStatus.OK);
+		ArrayList<List> list = new ArrayList<>();
+
+		List<Producto> productos = categoriaProducto.getProductos();
+		if (productos.size() != 0) {
+			for (Producto producto : productos) {
+				System.out.println("Producto" + producto.getNombre());
+				
+			}
+			categoriaProducto.getProductos().addAll(productos);
+		}
+		
+		return new ResponseEntity<CategoriaProducto>(categoriaProducto, HttpStatus.OK);
 	}
 	
 	//POST

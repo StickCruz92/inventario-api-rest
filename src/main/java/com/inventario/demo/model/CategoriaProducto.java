@@ -3,6 +3,7 @@ package com.inventario.demo.model;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -32,20 +33,15 @@ public class CategoriaProducto implements Serializable {
 	
 	@Column(name="estado")
 	private int estado;
-    
-	/*
-	@OneToMany(mappedBy="categoriaProducto", cascade =CascadeType.ALL, fetch=FetchType.EAGER)
+	
+    /*@OneToMany(mappedBy="teacher")
 	@JsonIgnore
-	private List<Producto> productos = new ArrayList<>();
+	private Set<Course> courses;*/
 	
-	public List<Producto> getProductos() {
-		return productos;
-	}
+	@OneToMany(mappedBy = "categoriaProducto", fetch=FetchType.EAGER, cascade = CascadeType.ALL)
+	@JsonIgnore
+	private List<Producto> productos;
 	
-	public void setProductos(List<Producto> productos) {
-		this.productos = productos;
-	}
-	*/
 	public CategoriaProducto() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -54,7 +50,16 @@ public class CategoriaProducto implements Serializable {
 		super();
 		this.nombre = nombre;
 		this.estado = estado;
+		
 	}
+	
+	public CategoriaProducto(String nombre, int estado, List<Producto> productos) {
+		super();
+		this.nombre = nombre;
+		this.estado = estado;
+		this.productos = productos;
+	}
+	
 	public Long getIdCategoriaProducto() {
 		return idCategoriaProducto;
 	}
@@ -73,5 +78,12 @@ public class CategoriaProducto implements Serializable {
 	public void setEstado(int estado) {
 		this.estado = estado;
 	}
+	public List<Producto> getProductos() {
+		return productos;
+	}
+	public void setProductos(List<Producto> productos) {
+		this.productos = productos;
+	}
+	
 	
 }

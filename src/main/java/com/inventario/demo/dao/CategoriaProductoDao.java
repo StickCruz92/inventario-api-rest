@@ -17,5 +17,5 @@ public interface CategoriaProductoDao {
 	CategoriaProducto findById(Long idCategoriaProducto);
 	
 	CategoriaProducto findByName(String name);
-	
+		
 }

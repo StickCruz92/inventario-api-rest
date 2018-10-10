@@ -20,10 +20,8 @@ import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-
 @Entity
 @Table(name="producto")
-
 public class Producto implements Serializable{
 
 	@Id
@@ -31,6 +29,13 @@ public class Producto implements Serializable{
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long idProducto;
 	
+	public Producto(Long idProducto, String nombre, int estado, CategoriaProducto categoriaProducto) {
+		super();
+		this.idProducto = idProducto;
+		this.nombre = nombre;
+		this.estado = estado;
+		this.categoriaProducto = categoriaProducto;
+	}
 	@Column(name="nombre")
 	private String nombre;
 	
@@ -38,50 +43,19 @@ public class Producto implements Serializable{
 	private int estado;
 	
 	/*
-	@OneToMany(mappedBy="producto", cascade =CascadeType.ALL, fetch=FetchType.EAGER)
-	@JsonIgnore
-	private List<Venta> venta = new ArrayList<>();
+	@ManyToOne(optional=true, fetch=FetchType.EAGER)
+	@JoinColumn(name="id_teacher")
+	private Teacher teacher;*/
 	
-	public void setVenta(List<Venta> venta) {
-		this.venta = venta;
-	}
-	
-	public List<Venta> getVenta() {
-		return venta;
-	}
-	
-	/*
-	@OneToMany(mappedBy="teacher")
-	@JsonIgnore
-	private Set<Venta> ventas;
-	*/
-	
-	@ManyToOne(fetch=FetchType.LAZY)
+	@ManyToOne(optional=false, fetch=FetchType.EAGER)
 	@JoinColumn(name="id_categoria_producto")
-	@JsonIgnore
 	private CategoriaProducto categoriaProducto;
-	
-	@OneToOne(cascade = {CascadeType.ALL})
-	@JoinColumn(name="id_detalle_producto")
-	@JsonIgnore
-	private DetalleProducto detalleProducto;
+
 	
 	public Producto() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-
-	public Producto(Long idProducto, CategoriaProducto categoriaProducto, DetalleProducto detalleProducto,
-			String nombre, int estado) {
-		super();
-		this.idProducto = idProducto;
-		this.categoriaProducto = categoriaProducto;
-		this.detalleProducto = detalleProducto;
-		this.nombre = nombre;
-		this.estado = estado;
-	}
-
-
 
 	public Long getIdProducto() {
 		return idProducto;
@@ -95,12 +69,7 @@ public class Producto implements Serializable{
 	public void setCategoriaProducto(CategoriaProducto categoriaProducto) {
 		this.categoriaProducto = categoriaProducto;
 	}
-	public DetalleProducto getDetalleProducto() {
-		return detalleProducto;
-	}
-	public void setDetalleProducto(DetalleProducto detalleProducto) {
-		this.detalleProducto = detalleProducto;
-	}
+
 	public String getNombre() {
 		return nombre;
 	}

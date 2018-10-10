@@ -34,35 +34,11 @@ public class Venta implements Serializable{
 	
 	@Column(name ="estado")
 	private int estado;	
-	
-	/*
-	@ManyToOne(optional=true, fetch=FetchType.EAGER)
-	@JoinColumn(name="id_producto")
-	@JsonIgnore
-	private Producto producto;
-	
-	public Producto getProducto() {
-		return producto;
-	}
 
-	public void setProducto(Producto producto) {
-		this.producto = producto;
-	}
-	*/
 	
 	public Venta() {
 		super();
 		// TODO Auto-generated constructor stub
-	}
-
-	public Venta(Long idVenta, String nombreUsuario, Date fecha, int cantidad, double precio, int estado) {
-		super();
-		this.idVenta = idVenta;
-		NombreUsuario = nombreUsuario;
-		this.fecha = fecha;
-		this.cantidad = cantidad;
-		this.precio = precio;
-		this.estado = estado;
 	}
 
 	public Long getIdVenta() {

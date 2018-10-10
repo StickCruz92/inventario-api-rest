@@ -35,23 +35,13 @@ public class DetalleProducto implements Serializable{
 	@Column(name="precio")
 	private double precio;
 	
-	@OneToOne(mappedBy="detalleProducto", fetch = FetchType.LAZY)
-	private Producto producto;
 	
 	public DetalleProducto() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	public DetalleProducto(Long idDetalleProducto, double peso, String dimensiones, int cantidad, String imagen,
-			double precio) {
-		super();
-		this.idDetalleProducto = idDetalleProducto;
-		this.peso = peso;
-		this.dimensiones = dimensiones;
-		this.cantidad = cantidad;
-		this.imagen = imagen;
-		this.precio = precio;
-	}
+
+	
 	public Long getIdDetalleProducto() {
 		return idDetalleProducto;
 	}
