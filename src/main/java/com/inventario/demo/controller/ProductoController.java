@@ -16,6 +16,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import com.inventario.demo.model.Producto;
 import com.inventario.demo.service.ProductoService;
+import com.inventario.demo.util.CustomResponseProducto;
 
 @Controller
 @RequestMapping("/v1")
@@ -25,7 +26,7 @@ public class ProductoController {
 	ProductoService _productoService;
 	
 	@RequestMapping(value="/productos", method = RequestMethod.GET, headers = "Accept=Application/json")
-	public ResponseEntity<List<Producto>> getProdutos () {
+	public ResponseEntity<?> getProdutos () {
 		
 		List<Producto> productos = new ArrayList<>();
 		
@@ -33,12 +34,12 @@ public class ProductoController {
 		if (productos.isEmpty() || productos == null)  {
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		}
-		
-		return new ResponseEntity<List<Producto>>(productos, HttpStatus.OK);
+		return new ResponseEntity(new CustomResponseProducto("OK", "200", productos), HttpStatus.OK);
+		//return new ResponseEntity<List<Producto>>(HttpStatus.OK);
 	}
 	
 	@RequestMapping(value = "/productos/{id}", method = RequestMethod.GET, headers = "Accept=Application/json")
-	public ResponseEntity<Producto> getProductoById(@PathVariable("id") Long idProducto) {
+	public ResponseEntity<?> getProductoById(@PathVariable("id") Long idProducto) {
 
 		try {
 			if (idProducto == null || idProducto.equals(null) || idProducto <= 0) {
@@ -46,11 +47,15 @@ public class ProductoController {
 			}
 			Producto producto = _productoService.findById(idProducto);
 			if (producto != null) {
-				return new ResponseEntity<Producto>(producto, HttpStatus.OK);
+				//return new ResponseEntity<Producto>(producto, HttpStatus.OK);
+				return new ResponseEntity(new CustomResponseProducto("OK", "200", producto), HttpStatus.OK);
 			}
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		} catch (Exception e) {
 			// TODO: handle exception
+            //return new ResponseEntity(new CustomErrorType("Unable to create. A course with name " + 
+            //		course.getName() + " already exist."),HttpStatus.CONFLICT);
+
 			System.out.println("Fatal Error " + _productoService.findById(idProducto) + " " + e.getMessage());
 			return new ResponseEntity<>(HttpStatus.CONFLICT);
 		}
@@ -67,10 +72,6 @@ public class ProductoController {
 		if (producto.getCategoriaProducto().getIdCategoriaProducto().equals(null) || producto.getCategoriaProducto().getIdCategoriaProducto() == null || producto.getCategoriaProducto().getIdCategoriaProducto() <= 0) {
 			return new ResponseEntity<>(HttpStatus.CONFLICT);
 		}
-		
-		/* if (_categoriaProductoService.findByName(categoriaProducto.getNombre()) != null) {
-			return new ResponseEntity(HttpStatus.NO_CONTENT);
-		}*/
 
 		if (_productoService.findByName(producto.getNombre()) != null) {
 			return new ResponseEntity(HttpStatus.NO_CONTENT);

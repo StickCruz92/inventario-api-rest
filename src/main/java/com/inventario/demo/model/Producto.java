@@ -29,32 +29,30 @@ public class Producto implements Serializable{
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long idProducto;
 	
-	public Producto(Long idProducto, String nombre, int estado, CategoriaProducto categoriaProducto) {
-		super();
-		this.idProducto = idProducto;
-		this.nombre = nombre;
-		this.estado = estado;
-		this.categoriaProducto = categoriaProducto;
-	}
 	@Column(name="nombre")
 	private String nombre;
 	
 	@Column(name="estado")
 	private int estado;
 	
-	/*
-	@ManyToOne(optional=true, fetch=FetchType.EAGER)
-	@JoinColumn(name="id_teacher")
-	private Teacher teacher;*/
-	
 	@ManyToOne(optional=false, fetch=FetchType.EAGER)
 	@JoinColumn(name="id_categoria_producto")
 	private CategoriaProducto categoriaProducto;
 
+	@OneToOne(cascade = {CascadeType.ALL}, fetch=FetchType.EAGER)
+	@JoinColumn(name="id_detalle_producto")
+	private DetalleProducto detalleProducto;
 	
 	public Producto() {
-		super();
 		// TODO Auto-generated constructor stub
+	}
+
+	public Producto(String nombre, int estado, CategoriaProducto categoriaProducto, DetalleProducto detalleProducto) {
+		super();
+		this.nombre = nombre;
+		this.estado = estado;
+		this.categoriaProducto = categoriaProducto;
+		this.detalleProducto = detalleProducto;
 	}
 
 	public Long getIdProducto() {
@@ -82,6 +80,15 @@ public class Producto implements Serializable{
 	public void setEstado(int estado) {
 		this.estado = estado;
 	}
+
+	public DetalleProducto getDetalleProducto() {
+		return detalleProducto;
+	}
+
+	public void setDetalleProducto(DetalleProducto detalleProducto) {
+		this.detalleProducto = detalleProducto;
+	}
+	
 	
 	
 	

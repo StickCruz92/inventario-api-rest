@@ -2,14 +2,18 @@ package com.inventario.demo.model;
 
 import java.io.Serializable;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name="detalle_producto")
@@ -35,13 +39,33 @@ public class DetalleProducto implements Serializable{
 	@Column(name="precio")
 	private double precio;
 	
+	@OneToOne(mappedBy = "detalleProducto", fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
+	@JsonIgnore
+	private Producto producto;
 	
 	public DetalleProducto() {
-		super();
 		// TODO Auto-generated constructor stub
 	}
-
 	
+	public DetalleProducto(double peso, String dimensiones, int cantidad, String imagen, double precio,
+			Producto producto) {
+		super();
+		this.peso = peso;
+		this.dimensiones = dimensiones;
+		this.cantidad = cantidad;
+		this.imagen = imagen;
+		this.precio = precio;
+		this.producto = producto;
+	}
+
+	public Producto getProducto() {
+		return producto;
+	}
+
+	public void setProducto(Producto producto) {
+		this.producto = producto;
+	}
+
 	public Long getIdDetalleProducto() {
 		return idDetalleProducto;
 	}

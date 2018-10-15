@@ -34,10 +34,6 @@ public class CategoriaProducto implements Serializable {
 	@Column(name="estado")
 	private int estado;
 	
-    /*@OneToMany(mappedBy="teacher")
-	@JsonIgnore
-	private Set<Course> courses;*/
-	
 	@OneToMany(mappedBy = "categoriaProducto", fetch=FetchType.EAGER, cascade = CascadeType.ALL)
 	@JsonIgnore
 	private List<Producto> productos;
